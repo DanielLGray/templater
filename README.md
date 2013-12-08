@@ -1,7 +1,7 @@
 templater
 =========
 
-An HTML template reader and generator
-Released under GPL v2 License
+An HTML template reader and generator\n
+Released under GPL v2 License\n
 Daniel Lloyd Gray
 
