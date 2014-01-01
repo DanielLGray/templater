@@ -1,4 +1,4 @@
-"""
+
 # necessary types 
 class doctype(object):
 	def __init__(self, tag):
@@ -28,7 +28,7 @@ class html(object):
 
 class body(object):
 	def __init__(self, tag):
-		self.tag 'body'
+		self.tag = 'body'
 	
 class nav(object):
 	def __init__(self, tag):
@@ -71,7 +71,7 @@ class source(object):
 	def __init__(self, attributes):
 		self.attributes = ['src=']
 
-"""
+
 
 class tag_engine(object):
 	"""Takes tag names and produces the right <, /, > syntax."""
@@ -102,11 +102,11 @@ class tag_engine(object):
 
 
 class page_builder(object):
-		''' Collects tags and attributes, and puts together a cohesive webpage '''
+	''' Collects tags and attributes, and puts together a cohesive webpage '''
 	def __init__(self):
 		pass
 		
-	def header(tags):
+	def header(self, tags):
 		pass
 		# takes a dictionary of tags and attributes, 
 		# and turns it into html.
