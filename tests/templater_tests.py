@@ -1,34 +1,46 @@
 from nose.tools import *
 import unittest
 import glob
-from templater import base, startproject
+from templater.templater import base
+
 from os import makedirs, removedirs, chdir, getcwd
 
-# def setup():
-# 	print 'SETUP!'
-
-# def teardown():
-# 	print 'TEAR DOWN!'
-
-# def test_basic():
-# 	print 'I RAN!'
 
 '''
-Well, what do I want to assert to be true?
-The goals of this program are to set up a project from the template files.
+This module sets up a project from the template files.
 Generate pages from the command line, and update those pages from the command line.
 '''
 
 
-class PageValues(unittest.TestCase):
 
-	def setUp(self):
-		self.pagename = 'mypage'
-		self.pagehtml = '<html><h1>Hello World!</h1></html>'
-		self.pagecss = 'h1 {\n\tcolor: green\n}'
-		self.pagejs = None
-		self.attr_values = [self.pagename, self.pagehtml, self.pagecss, self.pagejs]
-		self.exts = ['.html', '.css', '.js']
+def make_a_page_test():
+	name = 'alpha'
+	alpha = base.Page(name)
+	assert alpha.html_filename == name + '.html'
+
+
+def add_css_and_js_to_the_page_test():
+	name = 'alpha'
+	alpha = base.Page(name)
+	assert alpha.html_filename == name + '.html'
+	base.build_page_with_css_and_js(alpha)
+	assert alpha.css_filename == 'stylesheet.css' 
+	assert alpha.js_filename == 'script.js' 
+	other_css_file = 'othername'
+	other_js_file = 'anothername'
+	base.build_page_with_css_and_js(alpha, other_css_file, other_js_file)
+	assert alpha.css_filename == other_css_file + '.css'
+	assert alpha.js_filename == other_js_file + '.js'
+
+
+
+	# def setUp(self):
+	# 	self.pagename = 'mypage'
+	# 	self.pagehtml = '<html><h1>Hello World!</h1></html>'
+	# 	self.pagecss = 'h1 {\n\tcolor: green\n}'
+	# 	self.pagejs = None
+	# 	self.attr_values = [self.pagename, self.pagehtml, self.pagecss, self.pagejs]
+	# 	self.exts = ['.html', '.css', '.js']
 
 
 	# def test_make_page_object(self):
@@ -76,6 +88,9 @@ class PageValues(unittest.TestCase):
 
 		# And a way to remove the dir 'mypage' and files in that dir
 
+
+
+'''
 	def test_scratch(self):
 		
 		scratch_project = base.Scratch('myproject')
@@ -92,7 +107,39 @@ class PageValues(unittest.TestCase):
 				self.assertEqual(glob.glob(directory), [directory + extension])
 			chdir('..')	
 
+'''
+
+
+
 
 
 	# def test_generate_pages(self):
 	# 	pass
+
+
+
+# def generate_pages():
+# 	# projectName = raw_input('Project Name:')	
+# 	projectName = 'SampleProject'
+# 	a_project = Scratch(projectName)
+# 	a_project.pages_generator()
+
+
+# if __name__ == '__main__':
+# 	generate_pages()
+
+
+
+
+
+# def setup():
+# 	print 'SETUP!'
+
+# def teardown():
+# 	print 'TEAR DOWN!'
+
+# def test_basic():
+# 	print 'I RAN!'
+
+# @with_setup(setup, teardown)
+#class Page_class_setup_test(unittest.TestCase):

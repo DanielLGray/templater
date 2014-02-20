@@ -81,19 +81,19 @@ class tag_engine(object):
 	def __init__(self, name):
 		self.name = name
 
-	def tagOpen(self, tag):
+	def tag_open(self, tag):
 		self.tag = tag
 		tag_open = '<' + self.tag
 		return tag_open
 		
-	def tagClose(self, tag, attributes):
+	def tag_close(self, tag, attributes):
 		self.tag = tag
 		self.attributes = attributes
 		tag_close = self.tag + attributes + '>'
 		tag_close = '</' + self.tag + '>'
 		return tag_close
 
-	def tagOpenClose(self, tag, attributes):
+	def tag_open_and_close(self, tag, attributes):
 		self.tag = tag
 		self.attributes = attributes 
 		tag_open_close = '<' + self.tag + attributes + '/>'

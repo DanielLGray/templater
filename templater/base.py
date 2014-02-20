@@ -1,57 +1,79 @@
-from os import makedirs, removedirs, chdir
+import os 
 import re
 import glob
 
 
-''' Can create pages from a template, if run as stand-alone. '''	
-# each import line does the following:	
-# for class page_engine directory_builder to make directories and then for tests() to delete them!
-# for matching paterns
-# for looking in directories to get the template.html
+''' Can create pages. '''	
 
 
 class Page(object):
-	''' Has a name, html, css, and js attributes ''' 
-	# make optional keyword arguments here
-	def __init__(self, name, html=None, css=None, js=None):
+	''' Has a name and html attributes. Use Page.dictionary to access the html, css and js names and contents.''' 
+	def __init__(self, name):
 		self.name 	= name 
-		self.html 	= html
-		self.css 	= css
-		self.js 	= js
-		self.html_name = self.name + '.html'
-		self.css_name = self.name + '.css'
-		self.js_name = self.name + '.js'
-		self.names = [self.html_name, self.css_name, self.js_name]
-		self.dictionary = { 
-							self.html_name: self.html, 
-							self.css_name: self.css, 
-							self.js_name: self.js,
-						}
+		self.html_filename = self.name + '.html'
 
-	# def __str__(self):
-	# 	return('<%s.html Page object>' % self.name)
+	def __str__(self):
+	 	return('<%s.html Page object>' % self.name)
 
 
+def filename_builder(some_filename, extension):
+	''' Checks to see if the correct extension is added, and if no extension is present, the
+	specified one will be added. If an incorrect extension is found, raises ValueError. '''
+	(a_potential_name, ext) = os.path.splitext(some_filename)
+	if ext == extension:
+		return some_filename
+	elif ext == '':
+		return a_potential_name + extension
+	else:
+		raise ValueError("This extension is not supported: %s", ext)
 
-template = Page('template')
+def build_page_with_css_and_js(page_object, css_filename='stylesheet.css', js_filename='script.js'):
+	''' Supply a stylesheet and script with '.css' and '.js' extension (or not, and '.css' or '.js' will be added) '''
+	css_and_js_attrs = ('css_filename', css_filename, '.css'), ('js_filename', js_filename, '.js')
+	for key, value, extension in css_and_js_attrs:
+		setattr(page_object, key, filename_builder(value, extension))
 
-		try:
-			with open(name, 'r') as f:
-				self.html = f.read()
-			if re.match(css_name, self.html):
-				with open(css_template_name, 'r') as f:
-					self.css = f.read()
-			self.css_files = re.findall(r'[\w]+\.css')
+def try_and_make_dir(dir_name):
+	try:
+		os.makedirs(dir_name, 644)		
+		return True
+	except FileExistsError:
+		return False
+
+''' 
+script idea:
+if try_and_make_dir(dir_name):
+	write_html_css_js(stuff)
+'''
+# Here begins the work in progress
+# also open templater_tests.py and startproject.py
+def add_content_to_new_page(page_object, filename):
+	file_types = ['.html', '.js', '.css']
+	if filename has extension file_type
+		setattr(page_object, file_type, filename)
 	
-			assert len(css_files) <= 3, "Too many css files: only a site-wide style and individual stylesheet allowed."
-			assert css_template_name in css_files, "Specified sylesheet {0} is not in the css_files {1} found in the template_html".format(css_template_name, css_files)
 
-		except IOError:
-			self.html = None
+
+
+# template = Page('template')
+
+# 		try:
+# 			with open(name, 'r') as f:
+# 				self.html = f.read()
+# 			if re.match(css_name, self.html):
+# 				with open(css_template_name, 'r') as f:
+# 					self.css = f.read()
+# 			self.css_files = re.findall(r'[\w]+\.css')
+	
+# 			assert len(css_files) <= 3, "Too many css files: only a site-wide style and individual stylesheet allowed."
+# 			assert css_template_name in css_files, "Specified sylesheet {0} is not in the css_files {1} found in the template_html".format(css_template_name, css_files)
+
+# 		except IOError:
+# 			self.html = None
 		
 
 def page_writer(page):
-	''' Takes a page object,  index.html and children. '''
+	''' Takes a page object, and uses the associated dictionary to write pages. '''
 	
 	for key_name, value_content in page.dictionary.items():
 		with open(key_name, 'a') as f:
@@ -59,8 +81,8 @@ def page_writer(page):
 
 def dir_write_and_open(page):
 	try:
-		makedirs(page.name, 0644)
-		chdir(page.name)
+		os.makedirs(page.name, 0644)
+		os.chdir(page.name)
 		return None		
 	except Exception:
 		print("Could not change into newly created directory!")
@@ -69,7 +91,7 @@ def dir_write_and_open(page):
 def write_project_page(page):	
 	dir_write_and_open(page)
 	page_writer(page)
-	chdir('..')
+	os.chdir('..')
 	return None
 
 class Scratch(object):
@@ -129,14 +151,3 @@ class Scratch(object):
 
 
 
-
-
-# def generate_pages():
-# 	# projectName = raw_input('Project Name:')	
-# 	projectName = 'SampleProject'
-# 	a_project = Scratch(projectName)
-# 	a_project.pages_generator()
-
-
-# if __name__ == '__main__':
-# 	generate_pages()

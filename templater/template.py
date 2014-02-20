@@ -3,7 +3,10 @@ import re
 import glob
 
 
-''' Can create pages from a template, if run as stand-alone. '''	
+''' Can create pages from a template, if run as stand-alone. 
+OLD BACKUP VERSION OF BASE.PY
+
+'''	
 # each import line does the following:	
 # for class page_engine directory_builder to make directories and then for tests() to delete them!
 # for matching paterns
